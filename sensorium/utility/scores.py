@@ -32,11 +32,11 @@ def model_predictions(
             images, responses = (
                 batch[:2]
                 if not isinstance(batch, dict)
-                else (batch["videos"], batch["responses"])
+                else (batch["screen"], batch["responses"]) ### outdated keys
             )
             
         with torch.no_grad():
-            resp = responses.detach().cpu()[:, :, skip:]
+            resp = responses.detach().cpu()[:, :, :] ### what is this skip
             target = target + list(resp)
             with device_state(model, device):
                 out = (

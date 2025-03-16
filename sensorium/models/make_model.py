@@ -133,7 +133,7 @@ def make_video_model(
         }
     else:
         mean_activity_dict = {
-            k: next(iter(dataloaders[k]))[1].mean(0).mean(-1)
+            k: next(iter(dataloaders[k]))['responses'].mean(0).mean(-1) ### why is there an index used here instead of key?
             for k in dataloaders.keys()
         }
 
@@ -159,7 +159,7 @@ def make_video_model(
                 if deeplake_ds:
                     targets = next(iter(value))["responses"]
                 else:
-                    targets = next(iter(value))[2]
+                    targets = next(iter(value))['responses'] ### again why index here
                 mean_activity_dict[key] = targets.mean(0).mean(-1)
             readout_dict["mean_activity_dict"] = mean_activity_dict
         else:
