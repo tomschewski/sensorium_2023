@@ -26,13 +26,13 @@ def model_predictions(
                     batch_kwargs[k] = torch.Tensor(np.asarray(batch_kwargs[k])).to(
                         device
                     )
-            images = batch_kwargs["videos"]
+            images = batch_kwargs["screen"]
             responses = batch_kwargs["responses"]
         else:
             images, responses = (
                 batch[:2]
                 if not isinstance(batch, dict)
-                else (batch["videos"], batch["responses"])
+                else (batch["screen"], batch["responses"])
             )
             
         with torch.no_grad():

@@ -126,16 +126,10 @@ def make_video_model(
             k: get_module_output(core, v)[1:] for k, v in session_shape_dict_2d.items()
         }
 
-    if deeplake_ds:
-        mean_activity_dict = {
-            k: next(iter(dataloaders[k]))["responses"].mean(0).mean(-1)
-            for k in dataloaders.keys()
-        }
-    else:
-        mean_activity_dict = {
-            k: next(iter(dataloaders[k]))[1].mean(0).mean(-1)
-            for k in dataloaders.keys()
-        }
+    mean_activity_dict = {
+        k: next(iter(dataloaders[k]))["responses"].mean(0).mean(-1)
+        for k in dataloaders.keys()
+    }
 
     readout_dict["in_shape_dict"] = in_shapes_dict
     readout_dict["n_neurons_dict"] = n_neurons_dict
@@ -156,10 +150,7 @@ def make_video_model(
         if readout_dict["bias"]:
             mean_activity_dict = {}
             for key, value in dataloaders.items():
-                if deeplake_ds:
-                    targets = next(iter(value))["responses"]
-                else:
-                    targets = next(iter(value))[2]
+                targets = next(iter(value))["responses"]
                 mean_activity_dict[key] = targets.mean(0).mean(-1)
             readout_dict["mean_activity_dict"] = mean_activity_dict
         else:
